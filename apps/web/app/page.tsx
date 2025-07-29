@@ -1,4 +1,4 @@
-import { prisma } from "@repo/database";
+import { prisma } from "@zapier/database";
 
 export default async function IndexPage() {
   const users = await prisma.user.findMany();
