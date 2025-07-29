@@ -1,9 +1,13 @@
 {
-  "name": "@repo/database",
+  "name": "@zapier/database",
   "version": "1.0.0",
   "exports": {
-    ".": "./src/client.ts"
+    ".": {
+      "default": "./dist/client.js",
+      "types": "./src/client.ts"
+    }
   },
+  "types": "./src/client.ts",
   "scripts": {
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
@@ -21,8 +25,8 @@
     "@prisma/client": "latest"
   },
   "devDependencies": {
-    "@repo/eslint-config": "*",
-    "@repo/typescript-config": "*",
+    "@zapier/eslint-config": "*",
+    "@zapier/typescript-config": "*",
     "eslint": "^8.57.0",
     "prisma": "latest",
     "rimraf": "^5.0.5",
