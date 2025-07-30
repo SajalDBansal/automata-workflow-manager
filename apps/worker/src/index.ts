@@ -7,7 +7,7 @@ import { Kafka } from 'kafkajs';
 const TOPIC_NAME = 'zap-events';
 
 const kafka = new Kafka({
-    clientId: 'my-app',
+    clientId: 'outbox-worker',
     brokers: ['localhost:9092']
 })
 
@@ -29,8 +29,8 @@ async function main() {
 
             await new Promise(r => setTimeout(r, 500));
 
+            // actions to perform on the message
             console.log("processing message done");
-
 
             await consumer.commitOffsets([{
                 topic: TOPIC_NAME,
