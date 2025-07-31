@@ -1,6 +1,17 @@
 {
   "extends": "@zapier/typescript-config/nextjs.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ]
+    },
+    "typeRoots": [
+      "types",
+      "../../node_modules/@types",
+      "../packages/types"
+    ],
     "plugins": [
       {
         "name": "next"
@@ -9,9 +20,10 @@
   },
   "include": [
     "next-env.d.ts",
-    "next.config.js",
     "**/*.ts",
     "**/*.tsx",
+    "next-env.d.ts",
+    "next.config.js",
     ".next/types/**/*.ts"
   ],
   "exclude": [
