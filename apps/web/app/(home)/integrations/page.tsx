@@ -4,6 +4,8 @@ import { motion } from 'framer-motion';
 import { MagnifyingGlassIcon, StarIcon } from '@heroicons/react/24/outline';
 import { StarIcon as StarIconSolid } from '@heroicons/react/24/solid';
 import { toast } from 'sonner';
+import { image } from 'framer-motion/client';
+import { imageUrl } from '@/lib/imageUrl';
 
 const IntegrationsPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -24,7 +26,7 @@ const IntegrationsPage = () => {
     const featuredApps = [
         {
             name: 'Gmail',
-            icon: '📧',
+            icon: imageUrl["googleGmail"],
             category: 'communication',
             description: 'Send and manage emails automatically',
             rating: 4.8,
@@ -33,7 +35,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Slack',
-            icon: '💬',
+            icon: imageUrl["slack"],
             category: 'communication',
             description: 'Team communication and collaboration',
             rating: 4.9,
@@ -42,7 +44,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Google Sheets',
-            icon: '📊',
+            icon: imageUrl["googleSpreadsheet"],
             category: 'productivity',
             description: 'Create and update spreadsheets',
             rating: 4.7,
@@ -51,7 +53,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Trello',
-            icon: '📋',
+            icon: imageUrl["trello"],
             category: 'productivity',
             description: 'Organize projects with boards and cards',
             rating: 4.6,
@@ -60,7 +62,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Salesforce',
-            icon: '☁️',
+            icon: imageUrl["salesforce"],
             category: 'crm',
             description: 'Manage customer relationships and sales',
             rating: 4.5,
@@ -69,7 +71,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'HubSpot',
-            icon: '🧡',
+            icon: imageUrl["hubspot"],
             category: 'marketing',
             description: 'Inbound marketing and sales platform',
             rating: 4.7,
@@ -78,7 +80,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Shopify',
-            icon: '🛍️',
+            icon: imageUrl["shopify"],
             category: 'ecommerce',
             description: 'Build and manage online stores',
             rating: 4.8,
@@ -87,7 +89,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Twitter',
-            icon: '🐦',
+            icon: imageUrl["twitter"],
             category: 'social-media',
             description: 'Post tweets and monitor mentions',
             rating: 4.4,
@@ -96,7 +98,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Stripe',
-            icon: '💳',
+            icon: imageUrl["stripe"],
             category: 'finance',
             description: 'Process payments and subscriptions',
             rating: 4.9,
@@ -105,7 +107,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Dropbox',
-            icon: '📦',
+            icon: imageUrl["dropbox"],
             category: 'storage',
             description: 'Store and sync files in the cloud',
             rating: 4.6,
@@ -114,7 +116,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Facebook',
-            icon: '📘',
+            icon: imageUrl["facebook"],
             category: 'social-media',
             description: 'Manage pages and post content',
             rating: 4.3,
@@ -123,7 +125,7 @@ const IntegrationsPage = () => {
         },
         {
             name: 'Google Drive',
-            icon: '💾',
+            icon: imageUrl["googleDrive"],
             category: 'storage',
             description: 'Store files and collaborate on documents',
             rating: 4.8,
@@ -247,7 +249,7 @@ const IntegrationsPage = () => {
                             >
                                 <div className="flex items-start justify-between mb-4">
                                     <div className="w-14 h-14 bg-gray-100 rounded-xl flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
-                                        {app.icon}
+                                        <img src={app.icon} alt={app.name} className="w-10 h-10 object-contain" />
                                     </div>
                                     {app.popular && (
                                         <span className="bg-orange-100 text-orange-800 text-xs font-medium px-2 py-1 rounded-full">

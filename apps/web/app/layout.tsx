@@ -1,10 +1,10 @@
-import Header from "components/Appbar";
-import "./globals.css";
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import "./globals.css";
 import { AnimationProvider } from "providers/AnimationProvider";
-import Footer from "components/Footer";
 import { ToasterProvider } from "@/providers/ToasterProvider";
+import Header from "@/components/Appbar";
+import Footer from "@/components/Footer";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -30,7 +30,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={geist.className}>
         <AnimationProvider>
-          <main className="min-h-screen bg-white">
+          <main className="min-h-screen bg-white text-black">
             <Header />
             {children}
             <Footer />

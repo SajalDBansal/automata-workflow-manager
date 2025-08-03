@@ -1,16 +1,20 @@
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/outline';
 import { Zap } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { SigninType } from '@zapier/types';
+import axios from 'axios';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const LoginPage = () => {
     const router = useRouter();
 
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<SigninType>({
         email: '',
         password: '',
     });
@@ -20,12 +24,20 @@ const LoginPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate API call
-        setTimeout(() => {
+
+        try {
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signin`, formData);
             setIsLoading(false);
-            // Redirect to dashboard would happen here
-            router.push('/dashboard');
-        }, 1500);
+            if (response.status === 200) {
+                toast.success("Login successful");
+                localStorage.setItem('token', response.data.token);
+                router.push('/app');
+            }
+        } catch (error) {
+            setIsLoading(false);
+            // @ts-ignore
+            toast.error(error.response.data.message);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

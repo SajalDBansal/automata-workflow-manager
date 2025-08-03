@@ -29,6 +29,8 @@ router.post("/", authMiddleware, async (req, res) => {
                 data: {
                     triggerId: triggerId,
                     userId: userId,
+                    name: parsedData.data.name || "Untitled Zap",
+                    description: parsedData.data.description,
                     actions: {
                         create: parsedData.data.actions.map((action, index) => ({
                             actionId: action.avalaibleActionId,

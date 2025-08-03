@@ -1,7 +1,10 @@
+"use client";
 import { Twitter, TwitterIcon, Zap } from 'lucide-react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const Footer = () => {
+    const pathname = usePathname();
     const footerSections = [
         {
             title: 'Product',
@@ -44,6 +47,13 @@ const Footer = () => {
             ],
         },
     ];
+
+    const isAuthPage = pathname === '/login' || pathname === '/signup';
+    const isBuilder = pathname.startsWith('/builder');
+
+    if (isAuthPage || isBuilder) {
+        return null;
+    }
 
     return (
         <footer className="bg-gray-900 text-white m-2 rounded-2xl">

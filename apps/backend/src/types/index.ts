@@ -7,11 +7,13 @@ export const SignupSchema = z.object({
 });
 
 export const SigninSchema = z.object({
-    name: z.string().min(3).refine((val) => !val.includes(" "), "Name cannot contain spaces"),
+    email: z.email(),
     password: z.string().min(6),
 })
 
 export const ZapCreateSchema = z.object({
+    name: z.string().optional(),
+    description: z.string().optional(),
     availabeTriggerId: z.string(),
     triggerMetadata: z.any().optional(),
     actions: z.array(z.object({

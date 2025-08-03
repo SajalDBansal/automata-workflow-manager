@@ -10,6 +10,7 @@ import {
 } from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { Zap } from 'lucide-react';
+import { imageUrl } from '@/lib/imageUrl';
 
 export default function HomePage() {
 
@@ -37,12 +38,12 @@ export default function HomePage() {
     ];
 
     const integrations = [
-        { name: 'Gmail', logo: '📧', color: 'bg-red-100' },
-        { name: 'Slack', logo: '💬', color: 'bg-purple-100' },
-        { name: 'Trello', logo: '📋', color: 'bg-blue-100' },
-        { name: 'Salesforce', logo: '☁️', color: 'bg-cyan-100' },
-        { name: 'HubSpot', logo: '🧡', color: 'bg-orange-100' },
-        { name: 'Shopify', logo: '🛍️', color: 'bg-green-100' },
+        { name: 'Gmail', logo: imageUrl["googleGmail"], color: 'bg-red-100' },
+        { name: 'Slack', logo: imageUrl["slack"], color: 'bg-purple-100' },
+        { name: 'Trello', logo: imageUrl["trello"], color: 'bg-blue-100' },
+        { name: 'Salesforce', logo: imageUrl["salesforce"], color: 'bg-cyan-100' },
+        { name: 'HubSpot', logo: imageUrl["hubspot"], color: 'bg-orange-100' },
+        { name: 'Shopify', logo: imageUrl["shopify"], color: 'bg-green-100' },
     ];
 
     const testimonials = [
@@ -116,8 +117,8 @@ export default function HomePage() {
                             <div className="bg-white rounded-2xl shadow-2xl p-8 border border-gray-100">
                                 <div className="space-y-6">
                                     <div className="flex items-center space-x-4">
-                                        <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center text-2xl">
-                                            📧
+                                        <div className="w-12 h-12 bg-gray-100 rounded-lg flex items-center justify-center">
+                                            <img src={imageUrl["googleGmail"]} alt={"Gmail"} className="w-10 h-10" />
                                         </div>
                                         <div>
                                             <h3 className="font-semibold text-gray-900">Gmail</h3>
@@ -132,7 +133,7 @@ export default function HomePage() {
                                     <div className='flex justify-between'>
                                         <div className="flex items-center space-x-4">
                                             <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center text-2xl">
-                                                💬
+                                                <img src={imageUrl["slack"]} alt={"Slack"} className="w-6 h-6" />
                                             </div>
                                             <div>
                                                 <h3 className="font-semibold text-gray-900">Slack</h3>
@@ -156,7 +157,7 @@ export default function HomePage() {
 
                                     <div className="flex items-center space-x-4">
                                         <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center text-2xl">
-                                            📋
+                                            <img src={imageUrl["trello"]} alt={"Trello"} className="w-6 h-6" />
                                         </div>
                                         <div>
                                             <h3 className="font-semibold text-gray-900">Trello</h3>
@@ -249,7 +250,7 @@ export default function HomePage() {
                                 className="bg-white rounded-xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 hover:scale-105"
                             >
                                 <div className={`w-16 h-16 ${integration.color} rounded-xl flex items-center justify-center mx-auto mb-4 text-2xl`}>
-                                    {integration.logo}
+                                    <img src={integration.logo} alt={integration.name} className="w-10 h-10" />
                                 </div>
                                 <h3 className="font-semibold text-gray-900 text-sm">
                                     {integration.name}

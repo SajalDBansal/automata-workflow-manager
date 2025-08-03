@@ -27,31 +27,33 @@ const Header = () => {
     ];
 
     const isAuthPage = pathname === '/login' || pathname === '/signup';
-    const isDashboard = pathname.startsWith('/dashboard') || pathname.startsWith('/builder');
+    const isDashboard = pathname.startsWith('/app') || pathname.startsWith('/builder');
 
     if (isDashboard) {
         return (
             <header className="bg-white border-b border-gray-200 sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-16">
-                        <Link href="/dashboard" className="flex items-center space-x-2">
+                        <Link href="/app" className="flex items-center space-x-2">
                             <Zap className="h-8 w-8 text-orange-500" />
                             <span className="text-xl font-bold text-gray-900">Automata</span>
                         </Link>
                         <div className="flex items-center space-x-6">
-                            <Link href="/dashboard" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
+                            <Link href="/app" className="text-gray-700 hover:text-gray-900 px-3 py-2 rounded-md text-sm font-medium">
                                 My Zaps
                             </Link>
                             <Link href="/builder" className="bg-orange-500 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-orange-600 transition-colors">
                                 Create Zap
                             </Link>
-                            <div className="relative">
-                                <button className="flex items-center space-x-1 text-gray-700 hover:text-gray-900">
-                                    <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                                        <span className="text-orange-600 font-medium text-sm">U</span>
-                                    </div>
-                                </button>
-                            </div>
+                            <Link href={"/app/"}>
+                                <div className="relative">
+                                    <button className="flex items-center space-x-1 text-gray-700 hover:text-gray-900">
+                                        <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                            <span className="text-orange-600 font-medium text-sm">U</span>
+                                        </div>
+                                    </button>
+                                </div>
+                            </Link>
                         </div>
                     </div>
                 </div>

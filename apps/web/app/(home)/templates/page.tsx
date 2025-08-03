@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { MagnifyingGlassIcon, PlayIcon, ArrowRightIcon } from '@heroicons/react/24/outline';
 import { toast } from 'sonner';
+import { imageUrl } from '@/lib/imageUrl';
 
 const TemplatesPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
@@ -26,8 +27,8 @@ const TemplatesPage = () => {
             description: 'Get notified in Slack whenever you receive important emails in Gmail',
             category: 'productivity',
             apps: [
-                { name: 'Gmail', icon: '📧' },
-                { name: 'Slack', icon: '💬' }
+                { name: 'Gmail', icon: imageUrl["googleGmail"] },
+                { name: 'Slack', icon: imageUrl["slack"] }
             ],
             uses: 15420,
             featured: true,
@@ -38,8 +39,8 @@ const TemplatesPage = () => {
             description: 'Automatically create leads in Salesforce from form submissions',
             category: 'sales',
             apps: [
-                { name: 'Typeform', icon: '📝' },
-                { name: 'Salesforce', icon: '☁️' }
+                { name: 'Typeform', icon: imageUrl["typeform"] },
+                { name: 'Salesforce', icon: imageUrl["salesforce"] }
             ],
             uses: 8765,
             featured: true,
@@ -50,8 +51,8 @@ const TemplatesPage = () => {
             description: 'Automatically save email attachments to organized folders in Google Drive',
             category: 'productivity',
             apps: [
-                { name: 'Gmail', icon: '📧' },
-                { name: 'Google Drive', icon: '💾' }
+                { name: 'Gmail', icon: imageUrl["googleGmail"] },
+                { name: 'Google Drive', icon: imageUrl["googleDrive"] }
             ],
             uses: 12340,
             featured: false,
@@ -62,8 +63,8 @@ const TemplatesPage = () => {
             description: 'Turn important Slack messages into actionable Trello cards',
             category: 'productivity',
             apps: [
-                { name: 'Slack', icon: '💬' },
-                { name: 'Trello', icon: '📋' }
+                { name: 'Slack', icon: imageUrl["slack"] },
+                { name: 'Trello', icon: imageUrl["trello"] }
             ],
             uses: 6789,
             featured: false,
@@ -74,9 +75,9 @@ const TemplatesPage = () => {
             description: 'Automatically share your latest blog posts across social platforms',
             category: 'marketing',
             apps: [
-                { name: 'WordPress', icon: '📰' },
-                { name: 'Twitter', icon: '🐦' },
-                { name: 'Facebook', icon: '📘' }
+                { name: 'WordPress', icon: imageUrl["WordPress"] },
+                { name: 'Twitter', icon: imageUrl["twitter"] },
+                { name: 'Facebook', icon: imageUrl["facebook"] }
             ],
             uses: 9876,
             featured: true,
@@ -87,8 +88,8 @@ const TemplatesPage = () => {
             description: 'Build your email list by adding new customers to marketing campaigns',
             category: 'ecommerce',
             apps: [
-                { name: 'Shopify', icon: '🛍️' },
-                { name: 'Mailchimp', icon: '📨' }
+                { name: 'Shopify', icon: imageUrl["shopify"] },
+                { name: 'Mailchimp', icon: imageUrl["mailChimp"] }
             ],
             uses: 7654,
             featured: false,
@@ -99,8 +100,8 @@ const TemplatesPage = () => {
             description: 'Automatically log receipt data to expense tracking spreadsheets',
             category: 'finance',
             apps: [
-                { name: 'Receipt Bank', icon: '🧾' },
-                { name: 'Google Sheets', icon: '📊' }
+                { name: 'Receipt Bank', icon: imageUrl["recieptBank"] },
+                { name: 'Google Sheets', icon: imageUrl["googleSpreadsheet"] }
             ],
             uses: 4321,
             featured: false,
@@ -111,8 +112,8 @@ const TemplatesPage = () => {
             description: 'Automatically publish scheduled posts from your content planning tool',
             category: 'social-media',
             apps: [
-                { name: 'Airtable', icon: '🗂️' },
-                { name: 'Buffer', icon: '📅' }
+                { name: 'Airtable', icon: imageUrl["airtable"] },
+                { name: 'Buffer', icon: imageUrl["buffer"] }
             ],
             uses: 5432,
             featured: false,
@@ -207,7 +208,7 @@ const TemplatesPage = () => {
                                         {template.apps.map((app, appIndex) => (
                                             <React.Fragment key={app.name}>
                                                 <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
-                                                    {app.icon}
+                                                    <img src={app.icon} alt={app.name} className="w-8 h-8 object-contain" />
                                                 </div>
                                                 {appIndex < template.apps.length - 1 && (
                                                     <ArrowRightIcon className="h-4 w-4 text-gray-400" />
@@ -298,7 +299,7 @@ const TemplatesPage = () => {
                                     {template.apps.map((app, appIndex) => (
                                         <React.Fragment key={app.name}>
                                             <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg group-hover:scale-110 transition-transform">
-                                                {app.icon}
+                                                <img src={app.icon} alt={app.name} className="w-8 h-8 object-contain" />
                                             </div>
                                             {appIndex < template.apps.length - 1 && (
                                                 <ArrowRightIcon className="h-4 w-4 text-gray-400" />

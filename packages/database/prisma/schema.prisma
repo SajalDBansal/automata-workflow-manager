@@ -20,13 +20,19 @@ model User {
 }
 
 model Zap {
-  id        String   @id @default(uuid())
-  triggerId String
-  userId    String
-  trigger   Trigger?
-  actions   Action[]
-  zapRuns   ZapRun[]
-  user      User     @relation(fields: [userId], references: [id])
+  id          String    @id @default(uuid())
+  name        String?   @default("Untitled Zap")
+  description String?
+  lastRun     String?
+  created     DateTime  @default(now())
+  tasks       Int?
+  status      ZapStatus @default(PENDING)
+  triggerId   String
+  userId      String
+  trigger     Trigger?
+  actions     Action[]
+  zapRuns     ZapRun[]
+  user        User      @relation(fields: [userId], references: [id])
 }
 
 model Trigger {
@@ -74,4 +80,12 @@ model ZapRunOutbox {
   id       String @id @default(uuid())
   zapRunId String @unique
   zapRun   ZapRun @relation(fields: [zapRunId], references: [id])
+}
+
+enum ZapStatus {
+  PENDING
+  ACTIVE
+  PAUSED
+  ERROR
+  DELETED
 }

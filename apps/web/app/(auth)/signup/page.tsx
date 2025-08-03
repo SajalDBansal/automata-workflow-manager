@@ -5,8 +5,15 @@ import { EyeIcon, EyeSlashIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Zap } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from 'sonner';
+import { SignupType } from '@zapier/types';
+import axios from 'axios';
+import { useRouter } from 'next/navigation';
+
+const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const SignupPage = () => {
+    const router = useRouter();
+
     const [formData, setFormData] = useState({
         firstName: '',
         lastName: '',
@@ -29,12 +36,23 @@ const SignupPage = () => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsLoading(true);
-        // Simulate API call
-        setTimeout(() => {
+        const userData: SignupType = {
+            email: formData.email,
+            password: formData.password,
+            name: `${formData.firstName} ${formData.lastName}`,
+        }
+        try {
+            const response = await axios.post(`${BACKEND_URL}/api/v1/user/signup`, userData);
             setIsLoading(false);
-            // Redirect to dashboard would happen here
-            window.location.href = '/dashboard';
-        }, 1500);
+            if (response.status === 200) {
+                toast.success("Account created successfully");
+                router.push('/login');
+            }
+        } catch (e) {
+            setIsLoading(false);
+            // @ts-ignore
+            toast.error(e.response.data.message);
+        }
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -21,7 +21,6 @@
     "@zapier/eslint-config": "*",
     "@zapier/typescript-config": "*",
     "@zapier/types": "*",
-    "@zapier/validators": "*",
     "eslint": "^8.57.0",
     "tsx": "4.19.1",
     "typescript": "5.5.4"
