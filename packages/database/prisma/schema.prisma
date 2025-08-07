@@ -54,18 +54,32 @@ model Action {
   sortingOrder Int             @default(0)
 }
 
+model AppCategory {
+  id               String             @id @default(uuid())
+  name             String
+  image            String
+  AvailableAction  AvailableAction[]
+  AvailableTrigger AvailableTrigger[]
+}
+
 model AvailableAction {
-  id      String   @id @default(uuid())
-  name    String
-  image   String
-  actions Action[]
+  id            String       @id @default(uuid())
+  name          String
+  image         String
+  description   String?
+  appCategoryId String?
+  appCategory   AppCategory? @relation(fields: [appCategoryId], references: [id])
+  actions       Action[]
 }
 
 model AvailableTrigger {
-  id       String    @id @default(uuid())
-  name     String
-  image    String
-  triggers Trigger[]
+  id            String       @id @default(uuid())
+  name          String
+  image         String
+  description   String?
+  appCategoryId String?
+  appCategory   AppCategory? @relation(fields: [appCategoryId], references: [id])
+  triggers      Trigger[]
 }
 
 model ZapRun {

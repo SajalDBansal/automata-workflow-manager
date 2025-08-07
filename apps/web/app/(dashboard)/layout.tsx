@@ -1,5 +1,3 @@
-import { SessionProvider } from "@/providers/SessionProvider";
-
 export default function DashboardLayout({
     children,
 }: {
@@ -7,10 +5,8 @@ export default function DashboardLayout({
 }) {
 
     return (
-        <div className="min-h-screen bg-white">
-            {/* <SessionProvider> */}
+        <div className="bg-white">
             {children}
-            {/* </SessionProvider> */}
         </div>
     );
 }

@@ -21,3 +21,18 @@ export const ZapCreateSchema = z.object({
         actionMetadata: z.any().optional(),
     })),
 });
+
+export const AppCategoryCreateSchema = z.object({
+    name: z.string(),
+    image: z.string(),
+    availableActions: z.array(z.object({
+        name: z.string(),
+        image: z.string(),
+        description: z.string().optional(),
+    })),
+    availableTriggers: z.array(z.object({
+        name: z.string(),
+        image: z.string(),
+        description: z.string().optional(),
+    })),
+});

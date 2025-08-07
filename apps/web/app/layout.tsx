@@ -5,6 +5,7 @@ import { AnimationProvider } from "providers/AnimationProvider";
 import { ToasterProvider } from "@/providers/ToasterProvider";
 import Header from "@/components/Appbar";
 import Footer from "@/components/Footer";
+import SessionProvider from "@/providers/SessionProvider";
 
 const geist = Geist({ subsets: ["latin"] });
 
@@ -29,14 +30,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={geist.className}>
-        <AnimationProvider>
-          <main className="min-h-screen bg-white text-black">
-            <Header />
-            {children}
-            <Footer />
-          </main>
-        </AnimationProvider>
-        <ToasterProvider />
+        <SessionProvider>
+          <AnimationProvider>
+            <main className="min-h-screen bg-white text-black">
+              <Header />
+              {children}
+              <Footer />
+            </main>
+          </AnimationProvider>
+          <ToasterProvider />
+        </SessionProvider>
       </body>
     </html>
   );

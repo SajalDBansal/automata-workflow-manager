@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { ZapStatus, ZapType } from '@zapier/types';
 import { ClockIcon } from 'lucide-react';
 
+const HOOKS_URL = process.env.NEXT_PUBLIC_HOOKS_URL;
+
 const DashboardPage = () => {
     const [activeTab, setActiveTab] = useState('all');
     const router = useRouter();
@@ -85,7 +87,7 @@ const DashboardPage = () => {
                         </div>
                         <div className="mt-4 sm:mt-0 flex space-x-3">
                             <Link
-                                href="/builder"
+                                href="/zap/create"
                                 className="bg-purple-500 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-600 transition-colors flex items-center space-x-2"
                             >
                                 <PlusIcon className="h-5 w-5" />
@@ -167,6 +169,10 @@ const DashboardPage = () => {
                                             {zap.name}
                                         </h3>
                                         <p className="text-gray-600 mb-3">{zap.description}</p>
+                                        <p className="text-gray-600 mb-3 text-sm">
+                                            {zap.trigger.type.appCategory?.name === "Webhook" &&
+                                                `${HOOKS_URL}/hooks/catch/${zap.userId}/${zap.id}`}
+                                        </p>
 
                                         <div className="flex items-center space-x-6 text-sm text-gray-500">
                                             <span>{zap.tasks} tasks run</span>

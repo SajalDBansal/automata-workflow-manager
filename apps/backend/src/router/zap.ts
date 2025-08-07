@@ -77,12 +77,20 @@ router.get("/", authMiddleware, async (req, res) => {
             include: {
                 actions: {
                     include: {
-                        type: true,
+                        type: {
+                            include: {
+                                appCategory: true,
+                            }
+                        },
                     }
                 },
                 trigger: {
                     include: {
-                        type: true,
+                        type: {
+                            include: {
+                                appCategory: true,
+                            }
+                        },
                     }
                 }
             }

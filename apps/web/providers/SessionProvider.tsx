@@ -1,23 +1,25 @@
-"use client";
+'use client'; // only if you're using App Router
 
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation'; // or 'next/navigation' in App Router
 
+interface SessionProviderProps {
+    children: React.ReactNode;
+}
 
-export const SessionProvider = ({ children }: { children: React.ReactNode }) => {
-    // if (typeof window === 'undefined') return null;
-    const token = localStorage.getItem('token');
-    console.log(token);
-
+const SessionProvider: React.FC<SessionProviderProps> = ({ children }) => {
     const router = useRouter();
+    const pathname = usePathname();
 
-    if (!token) {
-        router.push('/');
-        return null;
-    }
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+        if (token && pathname === '/') {
+            // Redirect to /app if token exists
+            router.push('/app');
+        }
+    }, [pathname]);
 
-    return (
-        <div>
-            {children}
-        </div>
-    );
+    return <>{children}</>;
 };
+
+export default SessionProvider;

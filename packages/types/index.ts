@@ -9,6 +9,13 @@ export type SigninType = {
     password: string;
 }
 
+export type UserType = {
+    id: string;
+    name: string;
+    email: string;
+    password?: string;
+}
+
 export type ZapType = {
     id: string;
     name: string;
@@ -24,39 +31,53 @@ export type ZapType = {
     user?: UserType;
 }
 
+export type TriggerType = {
+    id: string;
+    zapId: string;
+    triggerId: string;
+    metadata: any;
+    configured: boolean;
+    type: AvailableTriggerType;
+    zap?: ZapType;
+}
+
 export type ActionType = {
     id: string;
     zapId: string;
     actionId: string;
     metadata: any;
     sortingOrder: number;
+    configured: boolean;
     type: AvailableActionType;
+    zap?: ZapType;
 }
 
-export type TriggerType = {
+export type AppCategoryType = {
     id: string;
-    zapId: string;
-    triggerId: string;
-    metadata: any;
-    type: AvailableTriggerType;
+    name: string;
+    image: string;
+    AvailableAction: AvailableActionType[];
+    AvailableTrigger: AvailableTriggerType[];
 }
 
 export type AvailableActionType = {
     id: string;
     name: string;
     image: string;
+    description?: string;
+    appCategoryId?: string;
+    appCategory?: AppCategoryType;
+    actions?: ActionType[];
 }
 
 export type AvailableTriggerType = {
     id: string;
     name: string;
     image: string;
-}
-
-export type UserType = {
-    id: string;
-    name: string;
-    email: string;
+    description?: string;
+    appCategoryId?: string;
+    appCategory?: AppCategoryType;
+    triggers?: TriggerType[];
 }
 
 export enum ZapStatus {
@@ -66,3 +87,5 @@ export enum ZapStatus {
     ERROR = "ERROR",
     DELETED = "DELETED"
 }
+
+

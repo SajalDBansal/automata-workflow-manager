@@ -49,7 +49,7 @@ const Footer = () => {
     ];
 
     const isAuthPage = pathname === '/login' || pathname === '/signup';
-    const isBuilder = pathname.startsWith('/builder');
+    const isBuilder = pathname.startsWith('/zap/create');
 
     if (isAuthPage || isBuilder) {
         return null;
