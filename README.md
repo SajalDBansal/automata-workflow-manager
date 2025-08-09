@@ -1,199 +1,321 @@
-# Turborepo + Prisma ORM starter
+# AUTOMATA 🚀
 
-This is a example designed to help you quickly set up a Turborepo monorepo with a Next.js app and Prisma ORM. This is a community-maintained example. If you experience a problem, please submit a pull request with a fix. GitHub Issues will be closed.
+AUTOMATA is a powerful workflow automation platform that allows users to connect their favorite apps and automate repetitive tasks without any coding knowledge. Built with modern web technologies, it provides a visual drag-and-drop interface for creating complex workflows (called "Zaps") that can trigger actions across multiple applications.
 
-## What's inside?
+## 📋 Table of Contents
 
-This turborepo includes the following packages/apps:
+- [Description](#description)
+- [Features](#features)
+- [Components](#components)
+- [Project Structure](#project-structure)
+- [Technologies Used](#technologies-used)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Development](#development)
+- [Contributing](#contributing)
 
-### Apps and packages
+## 🎯 Description
 
-- `web`: a [Next.js](https://nextjs.org/) app
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/database`: [Prisma ORM](https://prisma.io/) to manage & access your database
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+AUTOMATA is an automation platform inspired by Zapier, designed to help users streamline their workflows by connecting different applications and services. The platform features a visual workflow builder that allows users to create automation rules (Zaps) by selecting triggers and actions from various integrated applications.
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Key Concepts
 
-### Utilities
+- **Zaps**: Automated workflows that connect triggers to actions
+- **Triggers**: Events that start a workflow (e.g., new email, form submission)
+- **Actions**: Tasks performed in response to triggers (e.g., send notification, create record)
+- **Apps**: Third-party services that can be integrated (Gmail, Slack, Trello, etc.)
 
-This turborepo has some additional tools already setup for you:
+## ✨ Features
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-- [Prisma ORM](https://prisma.io/) for accessing the database
-- [Docker Compose](https://docs.docker.com/compose/) for a local MySQL database
+### Core Features
+- **Visual Workflow Builder**: Drag-and-drop interface for creating automations
+- **Multi-App Integration**: Connect with popular services like Gmail, Slack, Trello, Salesforce (currently: Gmail, Solana)
+- **Real-time Execution**: Workflows run automatically when triggers are activated
+- **User Authentication**: Secure login and signup system
+- **Dashboard**: Manage and monitor all your automations in one place
+- **Analytics**: Track workflow performance and execution history
 
-## Getting started
+### User Experience
+- **No-Code Automation**: Create complex workflows without programming knowledge
+- **Intuitive Interface**: Clean, modern UI with smooth animations
+- **Responsive Design**: Works seamlessly across desktop and mobile devices
+- **Real-time Updates**: Live status updates and notifications
+- **Template Library**: Pre-built automation templates for common use cases
 
-Follow these steps to set up and run your Turborepo project with Prisma ORM:
+### Technical Features
+- **Microservices Architecture**: Scalable backend with separate services
+- **Event-Driven Processing**: Kafka-based message queuing for reliable execution
+- **Database Management**: PostgreSQL with Prisma ORM
+- **Type Safety**: Full TypeScript implementation
+- **API-First Design**: RESTful APIs for all operations
 
-### 1. Create a Turborepo project
+## 🏗️ Components
 
-Start by creating a new Turborepo project using the following command:
+### Frontend (Web App)
+- **Next.js 15**: React framework with App Router
+- **TypeScript**: Type-safe development
+- **Tailwind CSS**: Utility-first styling
+- **Framer Motion**: Smooth animations and transitions
+- **React Hooks**: Custom hooks for data management
+- **Axios**: HTTP client for API communication
 
-```sh
-npx create-turbo@latest -e with-prisma
+### Backend Services
+- **Express.js**: RESTful API server
+- **Authentication**: JWT-based user authentication
+- **Database**: PostgreSQL with Prisma ORM
+- **Message Queue**: Kafka for event processing
+- **Validation**: Zod schema validation
+
+### Hooks Services
+- **Zap Triggers**: Webhooks for external triggers
+- **Express Middleware**: Custom middleware for API requests
+
+### Processing Services
+- **Event Processing**: Kafka-based message queuing for reliable execution
+
+### Worker Services
+- **Background Jobs**: Background tasks for long-running processes
+- **Actions**: Tasks performed in response to triggers (e.g., send notification, create record)
+
+### Infrastructure
+- **Turbo**: Monorepo build system
+- **Docker**: Containerized development environment
+- **Database Migrations**: Automated schema management
+- **Type Generation**: Shared TypeScript types across packages
+
+## 📁 Project Structure
+
+```
+AUTOMATA/
+├── apps/                          # Application packages
+│   ├── backend/                   # Express.js API server
+│   │   ├── src/
+│   │   │   ├── index.ts          # Server entry point
+│   │   │   ├── middleware.ts     # Express middleware
+│   │   │   └── router/           # API route handlers
+│   │   └── package.json
+│   ├── web/                      # Next.js frontend application
+│   │   ├── app/                  # App Router pages
+│   │   │   ├── (auth)/           # Authentication pages
+│   │   │   ├── (dashboard)/      # Dashboard pages
+│   │   │   └── (home)/           # Marketing pages
+│   │   ├── components/           # Reusable UI components
+│   │   ├── hooks/                # Custom React hooks
+│   │   └── providers/            # Context providers
+│   ├── hooks/                    # Web hooks Trigger handlers
+│   ├── processor/                # Event processing service
+│   └── worker/                   # Background job worker
+├── packages/                     # Shared packages
+│   ├── config-eslint/           # ESLint configuration
+│   ├── config-tailwind/         # Tailwind CSS configuration
+│   ├── config-typescript/       # TypeScript configuration
+│   ├── database/                # Database schema and client
+│   │   ├── prisma/              # Prisma schema and migrations
+│   │   └── src/                 # Database utilities
+│   └── types/                   # Shared TypeScript types
+├── docker-compose.yml           # Development environment
+├── package.json                 # Root package configuration
+├── turbo.json                   # Turbo build configuration
+└── README.md                    # This file
 ```
 
-Choose your desired package manager when prompted and a name for the app (e.g., `my-turborepo`). This will scaffold a new Turborepo project with Prisma ORM included and dependencies installed.
+## 🛠️ Technologies Used
 
-Navigate to your project directory:
+### Frontend
+- **Next.js 15.4.2**: React framework with App Router
+- **React 19.1.0**: UI library
+- **TypeScript 5.8.2**: Type-safe JavaScript
+- **Tailwind CSS 4.1.5**: Utility-first CSS framework
+- **Framer Motion 12.23.12**: Animation library
+- **Lucide React 0.534.0**: Icon library
+- **Axios 1.11.0**: HTTP client
+- **Sonner 2.0.6**: Toast notifications
+
+### Backend
+- **Express.js 5.1.0**: Web framework
+- **Node.js**: JavaScript runtime
+- **TypeScript 5.5.4**: Type-safe development
+- **Prisma**: Database ORM
+- **PostgreSQL**: Primary database
+- **Kafka**: Message queuing
+- **JWT**: Authentication tokens
+- **bcrypt**: Password hashing
+- **Zod**: Schema validation
+
+### Development Tools
+- **Turbo 2.5.5**: Monorepo build system
+- **ESLint**: Code linting
+- **Prettier**: Code formatting
+- **Docker**: Containerization
+- **npm 11.4.2**: Package manager
+
+### Database
+- **PostgreSQL**: Primary database
+- **Prisma**: Database ORM and migrations
+- **MySQL**: Development database (Docker)
+
+## 📋 Prerequisites
+
+Before you begin, ensure you have the following installed:
+
+- **Node.js** (>= 18.0.0)
+- **npm** (>= 11.4.2)
+- **Docker** and **Docker Compose**
+- **PostgreSQL** (for production)
+
+## 🚀 Installation
+
+### 1. Clone the Repository
 
 ```bash
-cd ./my-turborepo
+git clone https://github.com/SajalDBansal/automata-workflow-manager
+cd AUTOMATA
 ```
 
-### 2. Setup a local database with Docker Compose
-
-We use [Prisma ORM](https://prisma.io/) to manage and access our database. As such you will need a database for this project, either locally or hosted in the cloud.
-
-To make this process easier, a [`docker-compose.yml` file](./docker-compose.yml) is included to setup a MySQL server locally with a new database named `turborepo`:
-
-Start the MySQL database using Docker Compose:
-
-```sh
-docker-compose up -d
-```
-
-To change the default database name, update the `MYSQL_DATABASE` environment variable in the [`docker-compose.yml` file](/docker-compose.yml).
-
-### 3. Setup environment variables
-
-Once the database is ready, copy the `.env.example` file to the [`/packages/database`](./packages/database/) and [`/apps/web`](./apps/web/) directories as `.env`:
+### 2. Install Dependencies
 
 ```bash
-cp .env.example ./packages/database/.env
-cp .env.example ./apps/web/.env
+npm install
 ```
 
-This ensures Prisma has access to the `DATABASE_URL` environment variable, which is required to connect to your database.
+### 3. Set Up Environment Variables
 
-If you added a custom database name, or use a cloud based database, you will need to update the `DATABASE_URL` in your `.env` accordingly.
+Create `.env` files in the following locations:
 
-### 4. Migrate your database
-
-Once your database is running, you’ll need to create and apply migrations to set up the necessary tables. Run the database migration command:
-
-```bash
-# Using npm
-npm run db:migrate:dev
+**Root `.env`:**
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/automata"
+NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
 ```
 
-<details>
-
-<summary>Expand for <code>yarn</code>, <code>pnpm</code> or <code>bun</code></summary>
-
-```bash
-# Using yarn
-yarn run db:migrate:dev
-
-# Using pnpm
-pnpm run db:migrate:dev
-
-# Using bun
-bun run db:migrate:dev
+**Backend `.env` (apps/backend/.env):**
+```env
+DATABASE_URL="postgresql://username:password@localhost:5432/automata"
+JWT_SECRET="your-jwt-secret-key"
+PORT=3000
 ```
 
-</details>
+**Web `.env` (apps/web/.env):**
+```env
+NEXT_PUBLIC_BACKEND_URL="http://localhost:3000"
+```
 
-You’ll be prompted to name the migration. Once you provide a name, Prisma will create and apply the migration to your database.
-
-> Note: The `db:migrate:dev` script (located in [packages/database/package.json](/packages/database/package.json)) uses [Prisma Migrate](https://www.prisma.io/migrate) under the hood.
-
-For production environments, always push schema changes to your database using the [`prisma migrate deploy` command](https://www.prisma.io/docs/orm/prisma-client/deployment/deploy-database-changes-with-prisma-migrate). You can find an example `db:migrate:deploy` script in the [`package.json` file](/packages/database/package.json) of the `database` package.
-
-### 5. Seed your database
-
-To populate your database with initial or fake data, use [Prisma's seeding functionality](https://www.prisma.io/docs/guides/database/seed-database).
-
-Update the seed script located at [`packages/database/src/seed.ts`](/packages/database/src/seed.ts) to include any additional data that you want to seed. Once edited, run the seed command:
+### 4. Start Development Database
 
 ```bash
-# Using npm
+$ docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+```
+
+### 5. Set Up Database
+
+```bash
+# Generate Prisma client
+npm run generate
+
+# Run database migrations
+npm run db:migrate
+
+# Seed the database (optional)
 npm run db:seed
 ```
 
-<details>
-
-<summary>Expand for <code>yarn</code>, <code>pnpm</code> or <code>bun</code></summary>
+### 6. Start Development Servers
 
 ```bash
-# Using yarn
-yarn run db:seed
-
-# Using pnpm
-pnpm run db:seed
-
-# Using bun
-bun run db:seed
+# Start all services in development mode
+npm run dev
 ```
 
-</details>
+This will start:
+- **Frontend**: http://localhost:3001
+- **Backend**: http://localhost:3000
+- **Database**: localhost:5432 (PostgreSQL)
 
-### 6. Build your application
+## 💻 Usage
 
-To build all apps and packages in the monorepo, run:
+### Creating Your First Zap
+
+1. **Sign Up/Login**: Create an account or log in to your existing account
+2. **Navigate to Dashboard**: Access your automation dashboard
+3. **Create New Zap**: Click "Create Zap" to start building a workflow
+4. **Choose Trigger**: Select an app and event that will start your automation
+5. **Configure Trigger**: Set up the specific conditions for your trigger
+6. **Add Actions**: Choose what should happen when the trigger fires
+7. **Test & Publish**: Test your automation and publish it to start running
+
+### Example Workflow
+
+** Webhook to Gmail Notification Than Send Solana Transaction**
+- **Trigger**: New webhook in Zap Triggers
+- **Action**: Send Gmail notification
+- **Action**: Send Solana transaction
+- **Result**: Automatic Gmail notifications and Solana transactions for important webhooks
+
+### Managing Zaps
+
+- **View All Zaps**: See all your automations in the dashboard
+- **Edit Zaps**: Modify existing workflows anytime
+- **Pause/Resume**: Control when automations are active
+- **View History**: Check execution logs and performance
+
+## 🔧 Development
+
+### Available Scripts
 
 ```bash
-# Using npm
-npm run build
+# Development
+npm run dev              # Start all services in development mode
+npm run build           # Build all packages
+npm run lint            # Lint all packages
+npm run format          # Format code with Prettier
+
+# Database
+npm run db:migrate:dev  # Create new migration
+npm run db:migrate:deploy # Apply migrations
+npm run db:push         # Push schema changes
+npm run db:seed         # Seed database with sample data
+npm run generate        # Generate Prisma client
+
+# Individual Services
+npm run dev --filter=web      # Start only web app
+npm run dev --filter=backend  # Start only backend
 ```
 
-<details>
+### Code Structure
 
-<summary>Expand for <code>yarn</code>, <code>pnpm</code> or <code>bun</code></summary>
+- **Type Safety**: All packages use TypeScript with strict configuration
+- **Shared Types**: Common types are defined in `packages/types`
+- **Database Schema**: Managed through Prisma in `packages/database`
+- **API Routes**: RESTful endpoints in `apps/backend/src/router`
+- **UI Components**: Reusable components in `apps/web/components`
 
-```bash
-# Using yarn
-yarn run build
+### Adding New Features
 
-# Using pnpm
-pnpm run build
+1. **Backend API**: Add routes in `apps/backend/src/router`
+2. **Database Schema**: Update Prisma schema in `packages/database/prisma`
+3. **Frontend Components**: Create components in `apps/web/components`
+4. **Types**: Update shared types in `packages/types`
+5. **Testing**: Add tests for new functionality
 
-# Using bun
-bun run build
-```
+## 🤝 Contributing
 
-</details>
+We welcome contributions! Please follow these steps:
 
-### 7. Start the application
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
 
-Finally, start your application with:
+### Development Guidelines
 
-```bash
-yarn run dev
-```
+- Follow TypeScript best practices
+- Use conventional commit messages
+- Ensure all tests pass
+- Update documentation as needed
+- Follow the existing code style
 
-<details>
+---
 
-<summary>Expand for <code>yarn</code>, <code>pnpm</code> or <code>bun</code></summary>
-
-```bash
-# Using yarn
-yarn run dev
-
-# Using pnpm
-pnpm run dev
-
-# Using bun
-bun run dev
-```
-
-</details>
-
-Your app will be running at `http://localhost:3000`. Open it in your browser to see it in action!
-
-You can also read the official [detailed step-by-step guide from Prisma ORM](https://pris.ly/guide/turborepo?utm_campaign=turborepo-example) to build a project from scratch using Turborepo and Prisma ORM.
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+**AUTOMATA** - Automate your work, amplify your productivity! 🚀
