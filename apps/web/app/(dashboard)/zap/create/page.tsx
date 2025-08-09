@@ -1,6 +1,6 @@
 "use client"
-import React, { useState, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
 import {
     PlusIcon,
     CheckIcon,
@@ -9,13 +9,16 @@ import {
     PencilIcon,
     Bars3Icon,
     TrashIcon,
-    ArrowRightIcon
+    ArrowRightIcon,
+    XMarkIcon,
+    DocumentTextIcon
 } from '@heroicons/react/24/outline';
-import { MoveRightIcon, X } from 'lucide-react';
+import { CogIcon, MoveRightIcon, X } from 'lucide-react';
 import useApps from '@/hooks/useApps';
 import { AppCategoryType, AvailableActionType, AvailableTriggerType } from '@zapier/types';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { metadata } from 'framer-motion/client';
 
 type AppsType = {
     id: string;
@@ -53,6 +56,13 @@ type ExtractedDataType = {
     type: "trigger" | "action"
 };
 
+type ActionsMetaDataType = {
+    to?: string,
+    subject?: string,
+    body?: string,
+    amount?: string,
+}
+
 const BACKEND_URL = process.env.NEXT_PUBLIC_BACKEND_URL;
 
 const WorkflowBuilderPage = () => {
@@ -66,7 +76,6 @@ const WorkflowBuilderPage = () => {
     const [showSidebar, setShowSidebar] = useState(true);
 
     const [isTriggerSet, setIsTriggerSet] = useState(false);
-    const [showTriggersButton, setShowTriggersButton] = useState(false);
     const [SelectedTrigger, setSelectedTrigger] = useState<SelectedTriggerType>({
         id: '',
         name: '',
@@ -90,6 +99,9 @@ const WorkflowBuilderPage = () => {
         }
     ]);
 
+    const [isConfigurationBoxOpen, setIsConfigurationBoxOpen] = useState(false);
+    const [openForConfig, setOpenForConfig] = useState<SelectedActionType | null>(null);
+
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('all');
 
@@ -98,14 +110,6 @@ const WorkflowBuilderPage = () => {
     const dropZoneRef = useRef<HTMLDivElement>(null);
 
     const { isLoading, app } = useApps();
-
-    function extractApps(appsData: AppCategoryType[]) {
-        return appsData.map(app => ({
-            id: app.id,
-            name: app.name,
-            image: app.image,
-        }));
-    }
 
     function extractTriggers(appsData: AppCategoryType[]): ExtractedDataType[] {
         return appsData.flatMap(app =>
@@ -133,7 +137,6 @@ const WorkflowBuilderPage = () => {
         );
     }
 
-    const apps = extractApps(app);
     const triggers = extractTriggers(app);
     const actions = extractActions(app);
 
@@ -194,7 +197,7 @@ const WorkflowBuilderPage = () => {
             } else {
                 const updatedActions = selectedActions.map(action => {
                     if (action.id === cardId) {
-                        // If the action is blank, set it. If already set, update it.
+                        // If the action is blank, set it. If already set, update it. 
                         return {
                             ...action,
                             id: draggedItem.event.id,
@@ -278,7 +281,11 @@ const WorkflowBuilderPage = () => {
             }
         });
         router.push("/app");
+    }
 
+    const openConfigModal = (action: SelectedActionType) => {
+        setIsConfigurationBoxOpen(true);
+        setOpenForConfig(action);
     }
 
     if (isLoading) return <div className='flex items-center justify-center h-screen'>
@@ -385,6 +392,7 @@ const WorkflowBuilderPage = () => {
                             handleDrop={handleDrop}
                             removeAction={removeAction}
                             dragOverCard={dragOverCard}
+                            openConfigModal={openConfigModal}
                         />
 
                         {/* Add Action Button */}
@@ -405,7 +413,15 @@ const WorkflowBuilderPage = () => {
                 </div>
 
                 {/* configurations */}
-
+                {isConfigurationBoxOpen &&
+                    <ConfigurationModal
+                        setIsConfigurationBoxOpen={setIsConfigurationBoxOpen}
+                        action={openForConfig}
+                        selectedActions={selectedActions}
+                        selectedTrigger={SelectedTrigger}
+                        setSelectedActions={setSelectedActions}
+                    />
+                }
 
                 {/* side bar */}
                 <div className={`${showSidebar ? 'block' : 'hidden'} w-80 bg-white border-l border-gray-200 flex flex-col mb-20`}>
@@ -605,14 +621,16 @@ const CanvasTrigger = ({ trigger, handleDragOver, handleDragLeave, handleDrop, d
     )
 }
 
-const CanvasActions = ({ actions, handleDragOver, handleDragLeave, handleDrop, removeAction, dragOverCard }: {
+const CanvasActions = ({ actions, handleDragOver, handleDragLeave, handleDrop, removeAction, dragOverCard, openConfigModal }: {
     actions: SelectedActionType[];
     handleDragOver: (e: React.DragEvent, cardId?: string) => void;
     handleDragLeave: () => void;
     handleDrop: (e: React.DragEvent, cardType: 'trigger' | 'action', cardId: string) => void;
     removeAction: (orderId: number) => void;
     dragOverCard: string | null;
+    openConfigModal: (action: SelectedActionType) => void,
 }) => {
+
     return (
         <>
             {
@@ -646,6 +664,16 @@ const CanvasActions = ({ actions, handleDragOver, handleDragLeave, handleDrop, r
                                         </p>
                                     </div>
                                 </div>
+
+                                {action.name != "" && (
+                                    <button
+                                        onClick={() => openConfigModal(action)}
+                                        className="p-2 text-gray-400 hover:text-orange-600 rounded-md hover:bg-orange-50 transition-colors"
+                                        title="Configure step"
+                                    >
+                                        <CogIcon className="h-5 w-5" />
+                                    </button>
+                                )}
 
                                 {actions.length > 1 && (
                                     <button
@@ -694,4 +722,276 @@ const CanvasActions = ({ actions, handleDragOver, handleDragLeave, handleDrop, r
         </>
     )
 
+}
+
+const ConfigurationModal = ({ action, setIsConfigurationBoxOpen, setSelectedActions, selectedActions, selectedTrigger }: {
+    action: SelectedActionType | null;
+    setIsConfigurationBoxOpen: (isOpen: boolean) => void;
+    setSelectedActions: (selectedActions: SelectedActionType[]) => void;
+    selectedActions: SelectedActionType[];
+    selectedTrigger: SelectedTriggerType;
+}) => {
+    const [metaData, setMetaData] = useState<ActionsMetaDataType | null>(action?.metaData || null);
+
+    if (!action) return null;
+
+    const saveStepConfig = () => {
+        const updatedActions = selectedActions.map(a => {
+            if (a.id === action.id) {
+                return { ...a, metaData: metaData }
+            } else {
+                return a
+            }
+        });
+        setSelectedActions(updatedActions);
+        setIsConfigurationBoxOpen(false);
+    }
+
+    return (
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-transparent bg-opacity-50 flex items-center justify-center z-50 p-4"
+            >
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.95 }}
+                    className="bg-white rounded-lg shadow-xl max-w-2xl w-full max-h-[90vh] overflow-hidden"
+                >
+                    <div className="flex items-center justify-between p-6 border-b border-gray-200">
+                        <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center text-lg">
+                                <img src={action.image} alt={action.app_name} className="w-8 h-8" />
+                            </div>
+                            <div>
+                                <h3 className="text-lg font-semibold text-gray-900">
+                                    Configure {action.app_name}
+                                </h3>
+                                <p className="text-sm text-gray-600">
+                                    {action.name}
+                                </p>
+                            </div>
+                        </div>
+                        <button
+                            onClick={() => setIsConfigurationBoxOpen(false)}
+                            className="p-2 text-gray-400 hover:text-gray-600 rounded-md hover:bg-gray-100"
+                        >
+                            <XMarkIcon className="h-5 w-5" />
+                        </button>
+                    </div>
+
+                    <div className="px-6 py-2 overflow-y-auto max-h-[calc(90vh-140px)]">
+                        <div className="border-b border-t border-gray-200 py-2">
+                            <div>
+                                <h4 className="text-md font-semibold text-gray-900 mb-4">Trigger : Configuration ({selectedTrigger.name})</h4>
+                            </div>
+                        </div>
+
+
+                        {action.order > 0 && (
+                            selectedActions.map((a, index) => {
+                                if (a.order < action.order) return (
+                                    <div className="border-b border-t border-gray-200 py-2" key={index}>
+                                        <div>
+                                            <h4 className="text-md font-semibold text-gray-900 mb-4">Action : {index + 1} Configuration ({a.name})</h4>
+                                        </div>
+
+                                        <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg flex-wrap space-y-3">
+                                            {a.metaData.to &&
+                                                <div className='flex-1 space-x-3'>
+                                                    <label className="text-sm font-medium text-gray-900">To :</label>
+                                                    <input
+                                                        type="text"
+                                                        value={a.metaData.to || ''}
+                                                        disabled
+                                                        placeholder="To"
+                                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
+                                                    />
+                                                </div>
+
+                                            }
+                                            {a.metaData.subject &&
+                                                <div className='flex-1 space-x-3'>
+                                                    <label className="text-sm font-medium text-gray-900">Subject :</label>
+                                                    <input
+                                                        type="text"
+                                                        value={a.metaData.subject || ''}
+                                                        disabled
+                                                        placeholder="Subject"
+                                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
+                                                    />
+                                                </div>
+
+                                            }
+                                            {a.metaData.body &&
+                                                <div className='flex-1 space-x-3'>
+                                                    <label className="text-sm font-medium text-gray-900">Body :</label>
+                                                    <textarea
+                                                        value={a.metaData.body || ''}
+                                                        disabled
+                                                        placeholder="Body"
+                                                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm"
+                                                    />
+                                                </div>
+                                            }
+
+                                            {a.metaData.amount &&
+                                                <div className='flex-1 space-x-3'>
+                                                    <label className="text-sm font-medium text-gray-900">Amount :</label>
+                                                    <input
+                                                        type="number"
+                                                        value={a.metaData.amount || ''}
+                                                        disabled
+                                                        placeholder="Amount"
+                                                        className="px-3 py-2 border border-gray-300 rounded text-sm"
+                                                    />
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                )
+                            })
+                        )}
+                    </div>
+
+                    <div className="px-6 py-2 overflow-y-auto max-h-[calc(90vh-140px)]">
+                        {action.app_name == 'Gmail' && (
+                            <GmailMetaDataModal
+                                metaData={metaData}
+                                setMetaData={setMetaData}
+                            />
+                        )}
+                        {action.app_name == 'Solana' && (
+                            <SolanaMetaDataModal
+                                metaData={metaData}
+                                setMetaData={setMetaData}
+                            />
+                        )}
+                    </div>
+
+                    <div className="flex items-center justify-end space-x-3 p-6 border-t border-gray-200">
+                        <button
+                            onClick={() => setIsConfigurationBoxOpen(false)}
+                            className="px-4 py-2 text-gray-700 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onClick={saveStepConfig}
+                            className="px-6 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+                        >
+                            Save Configuration
+                        </button>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>
+    )
+}
+
+const GmailMetaDataModal = ({ metaData, setMetaData }: {
+    metaData: ActionsMetaDataType | null;
+    setMetaData: (metaData: ActionsMetaDataType) => void;
+}) => {
+    const [localMetaData, setLocalMetaData] = useState<ActionsMetaDataType>({
+        to: metaData?.to || '',
+        subject: metaData?.subject || '',
+        body: metaData?.body || ''
+    });
+
+    // Update local metadata when prop changes
+    useEffect(() => {
+        setLocalMetaData({
+            to: metaData?.to || '',
+            subject: metaData?.subject || '',
+            body: metaData?.body || ''
+        });
+    }, [metaData]);
+
+    const handleChange = (field: keyof ActionsMetaDataType, value: string) => {
+        const updated = { ...localMetaData, [field]: value };
+        setLocalMetaData(updated);
+        setMetaData(updated);
+    };
+
+    return (
+        <div className="space-y-6">
+            <div>
+                <h4 className="text-md font-semibold text-gray-900 mb-4">Current Action Configuration</h4>
+                <div className="flex flex-col justify-center items-center space-y-3 mb-3 p-3 bg-gray-50 rounded-lg">
+                    <input
+                        type="text"
+                        value={localMetaData.to || ''}
+                        onChange={(e) => handleChange('to', e.target.value)}
+                        placeholder="To"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
+                    />
+                    <input
+                        type="text"
+                        value={localMetaData.subject || ''}
+                        onChange={(e) => handleChange('subject', e.target.value)}
+                        placeholder="Subject"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
+                    />
+                    <textarea
+                        value={localMetaData.body || ''}
+                        onChange={(e) => handleChange('body', e.target.value)}
+                        placeholder="Body"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
+                    />
+                </div>
+            </div>
+        </div>
+    )
+}
+
+const SolanaMetaDataModal = ({ metaData, setMetaData }: {
+    metaData: ActionsMetaDataType | null;
+    setMetaData: (metaData: ActionsMetaDataType) => void;
+}) => {
+    const [localMetaData, setLocalMetaData] = useState<ActionsMetaDataType>({
+        to: metaData?.to || '',
+        amount: metaData?.amount || ''
+    });
+
+    // Update local metadata when prop changes
+    useEffect(() => {
+        setLocalMetaData({
+            to: metaData?.to || '',
+            amount: metaData?.amount || ''
+        });
+    }, [metaData]);
+
+    const handleChange = (field: keyof ActionsMetaDataType, value: string) => {
+        const updated = { ...localMetaData, [field]: value };
+        setLocalMetaData(updated);
+        setMetaData(updated);
+    };
+
+    return (
+        <div className="space-y-6">
+            <div>
+                <h4 className="text-md font-semibold text-gray-900 mb-4">Current Action Configuration</h4>
+                <div className="flex flex-col justify-center items-center space-y-3 mb-3 p-3 bg-gray-50 rounded-lg">
+                    <input
+                        type="text"
+                        value={localMetaData.to || ''}
+                        onChange={(e) => handleChange('to', e.target.value)}
+                        placeholder="To"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
+                    />
+                    <input
+                        type="number"
+                        value={localMetaData.amount || ''}
+                        onChange={(e) => handleChange('amount', e.target.value)}
+                        placeholder="Amount"
+                        className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
+                    />
+                </div>
+            </div>
+        </div>
+    )
 }

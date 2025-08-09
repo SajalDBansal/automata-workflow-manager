@@ -21,7 +21,14 @@ const useZaps = () => {
             setIsLoading(false);
         }
 
-        fetchData();
+        try {
+            fetchData();
+
+        } catch (error) {
+            console.log(error);
+            setIsLoading(false);
+        }
+
     }, []);
 
     return { isLoading, zaps };
