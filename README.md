@@ -1,3 +1,5 @@
+![AUTOMATA](https://res.cloudinary.com/drcbqssyo/image/upload/v1754909121/zapier_home_qhh5lh.png)
+
 # AUTOMATA 🚀
 
 AUTOMATA is a powerful workflow automation platform that allows users to connect their favorite apps and automate repetitive tasks without any coding knowledge. Built with modern web technologies, it provides a visual drag-and-drop interface for creating complex workflows (called "Zaps") that can trigger actions across multiple applications.
@@ -7,6 +9,7 @@ AUTOMATA is a powerful workflow automation platform that allows users to connect
 - [Description](#description)
 - [Features](#features)
 - [Components](#components)
+- [Architecture](#architecture)
 - [Project Structure](#project-structure)
 - [Technologies Used](#technologies-used)
 - [Prerequisites](#prerequisites)
@@ -83,6 +86,9 @@ AUTOMATA is an automation platform inspired by Zapier, designed to help users st
 - **Docker**: Containerized development environment
 - **Database Migrations**: Automated schema management
 - **Type Generation**: Shared TypeScript types across packages
+
+## 🏗️ Architecture
+![Automata Architecture](https://res.cloudinary.com/drcbqssyo/image/upload/v1754909121/zapier_architecture_xnnhst.png)
 
 ## 📁 Project Structure
 
