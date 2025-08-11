@@ -984,7 +984,7 @@ const SolanaMetaDataModal = ({ metaData, setMetaData }: {
                         className="flex-1 px-3 py-2 border border-gray-300 rounded text-sm w-full"
                     />
                     <input
-                        type="number"
+                        type="text"
                         value={localMetaData.amount || ''}
                         onChange={(e) => handleChange('amount', e.target.value)}
                         placeholder="Amount"

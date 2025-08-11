@@ -37,7 +37,8 @@ app.post("/hooks/catch/:userId/:zapId", async (req, res) => {
     }
 
     res.json({
-        message: "Webhook Received!"
+        message: "Webhook Received!",
+        // metadata: body,
     })
 });
 
